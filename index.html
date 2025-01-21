@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+    <div id="topFov"></div>
+    <main>
+        <div id="gameView">
+            <progress id="timeBar" max="100" value="100"></progress>
+            <div id="gameContent">
+                <div id="statPanel">
+                    <div>
+                        <p>Nivel</p>
+                        <p id="level">3</p>
+                    </div>
+                    <div>
+                        <p>Puntos</p>
+                        <p id="points">0</p>
+                    </div>
+                    <div>
+                        <p>Vidas</p>
+                        <p id="lives">3</p>
+                    </div>
+                </div>
+                <div id="displayWrapper">
+                    <div id="display"></div>
+                </div>
+                <div id="inputPanel">
+                    <button class="keycap" id="key0" onclick="round.makeInput(0)"></button>
+                    <button class="keycap" id="key1" onclick="round.makeInput(1)"></button>
+                    <button class="keycap" id="key2" onclick="round.makeInput(2)"></button>
+                    <button class="keycap" id="key3" onclick="round.makeInput(3)"></button>
+                    <div style="width: 20px;"></div>
+                    <button class="keycap" id="key4" onclick="round.makeInput(4)"></button>
+                    <button class="keycap" id="key5" onclick="round.makeInput(5)"></button>
+                    <button class="keycap" id="key6" onclick="round.makeInput(6)"></button>
+                    <button class="keycap" id="key7" onclick="round.makeInput(7)"></button>
+                </div>
+            </div>
+            <div id="streakPanel">
+                <p id="currentStreak">0</p>
+                <progress id="streakBar" max="100" value="0"></progress>
+            </div>
+        </div>
+    </main>
+    <div id="bottomFov"></div>
+
+    <div id="sfx" style="display: none;">
+        <audio id="sfx_in0" src="./sounds/in0.mp3"></audio>
+        <audio id="sfx_in1" src="./sounds/in1.mp3"></audio>
+        <audio id="sfx_in2" src="./sounds/in2.mp3"></audio>
+        <audio id="sfx_in3" src="./sounds/in3.mp3"></audio>
+        <audio id="sfx_in4" src="./sounds/in4.mp3"></audio>
+        <audio id="sfx_in5" src="./sounds/in5.mp3"></audio>
+        <audio id="sfx_in6" src="./sounds/in6.mp3"></audio>
+        <audio id="sfx_in7" src="./sounds/in7.mp3"></audio>
+        <audio id="sfx_in8" src="./sounds/in8.mp3"></audio>
+        <audio id="sfx_in9" src="./sounds/in9.mp3"></audio>
+        <audio id="sfx_in10" src="./sounds/in10.mp3"></audio>
+        <audio id="sfx_in11" src="./sounds/in11.mp3"></audio>
+        <audio id="sfx_in12" src="./sounds/in12.mp3"></audio>
+
+        <audio id="sfx_out0" src="./sounds/out0.mp3"></audio>
+        <audio id="sfx_out1" src="./sounds/out1.mp3"></audio>
+        <audio id="sfx_out2" src="./sounds/out2.mp3"></audio>
+        <audio id="sfx_out3" src="./sounds/out3.mp3"></audio>
+        <audio id="sfx_out4" src="./sounds/out4.mp3"></audio>
+        <audio id="sfx_out5" src="./sounds/out5.mp3"></audio>
+        <audio id="sfx_out6" src="./sounds/out6.mp3"></audio>
+        <audio id="sfx_out7" src="./sounds/out7.mp3"></audio>
+        <audio id="sfx_out8" src="./sounds/out8.mp3"></audio>
+        <audio id="sfx_out9" src="./sounds/out9.mp3"></audio>
+        <audio id="sfx_out10" src="./sounds/out10.mp3"></audio>
+        <audio id="sfx_out11" src="./sounds/out11.mp3"></audio>
+        <audio id="sfx_out12" src="./sounds/out12.mp3"></audio>
+
+        <audio id="sfx_up0" src="./sounds/up0.mp3"></audio>
+        <audio id="sfx_up1" src="./sounds/up1.mp3"></audio>
+        <audio id="sfx_up2" src="./sounds/up2.mp3"></audio>
+        <audio id="sfx_up3" src="./sounds/up3.mp3"></audio>
+        <audio id="sfx_up4" src="./sounds/up4.mp3"></audio>
+        <audio id="sfx_up5" src="./sounds/up5.mp3"></audio>
+        <audio id="sfx_up6" src="./sounds/up6.mp3"></audio>
+        <audio id="sfx_up7" src="./sounds/up7.mp3"></audio>
+        <audio id="sfx_up8" src="./sounds/up8.mp3"></audio>
+        <audio id="sfx_up9" src="./sounds/up9.mp3"></audio>
+        <audio id="sfx_up10" src="./sounds/up10.mp3"></audio>
+        <audio id="sfx_up11" src="./sounds/up11.mp3"></audio>
+        <audio id="sfx_up12" src="./sounds/up12.mp3"></audio>
+
+        <audio id="sfx_note0" src="./sounds/note0.mp3"></audio>
+        <audio id="sfx_note1" src="./sounds/note1.mp3"></audio>
+        <audio id="sfx_note2" src="./sounds/note2.mp3"></audio>
+        <audio id="sfx_note3" src="./sounds/note3.mp3"></audio>
+        <audio id="sfx_note4" src="./sounds/note4.mp3"></audio>
+        <audio id="sfx_note5" src="./sounds/note5.mp3"></audio>
+        <audio id="sfx_note6" src="./sounds/note6.mp3"></audio>
+        <audio id="sfx_note7" src="./sounds/note7.mp3"></audio>
+        <audio id="sfx_note8" src="./sounds/note8.mp3"></audio>
+        <audio id="sfx_note9" src="./sounds/note9.mp3"></audio>
+        <audio id="sfx_note10" src="./sounds/note10.mp3"></audio>
+        <audio id="sfx_note11" src="./sounds/note11.mp3"></audio>
+        <audio id="sfx_note12" src="./sounds/note12.mp3"></audio>
+        <audio id="sfx_note13" src="./sounds/note13.mp3"></audio>
+        <audio id="sfx_note14" src="./sounds/note14.mp3"></audio>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="library.js"></script>
+    <script src="storage.js"></script>
+    <script src="manageKeyboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+:root{
+  --main-blue: #06CDD9;
+  --color-correct: #06d950;
+  --color-incorrect: #f33f2f;
+  --color-golden: #eecb2c;
+}
+
+
+/* Permanent visual styles =========================================================== */
+*{
+  font-family: "JetBrains Mono", monospace;
+}
+
+#topFov, #bottomFov{
+  width: 100dvw;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#topFov{
+  height: 100px;
+  background-image: url(./imgs/topFov.webp);
+  top: 0;
+  background-position: center bottom;
+}
+#bottomFov{
+  height: 100px;
+  background-image: url(./imgs/bottomFov.webp);
+  bottom: 0;
+  background-position: center top;
+}
+
+main{
+  width: 100dvw; height: 100dvh;
+  background-color: #011A19;
+  color: white;
+  overflow: hidden;
+  background-image: url(./imgs/starBackdrop.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  place-content: center;
+  place-items: center;
+}
+
+
+/* Gameplay content ================================================================== */
+#gameView{
+  display: flex;
+}
+
+
+/* Progress bars ===================================================================== */
+progress{
+  --color: var(--main-blue);
+
+  border-radius: 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+
+  &::-webkit-progress-bar{
+    background-color: transparent;
+  }
+  &::-moz-progress-bar{
+    background-color: transparent;
+  }
+}
+
+#timeBar{
+  position: absolute;
+  left: -4rem;
+  bottom: 48%;
+  transform: rotateZ(270deg);
+  width: 65dvh;
+  height: 20px;
+
+  &::-webkit-progress-value{
+    background: url(./imgs/timeBar.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  &::-moz-progress-bar{
+    background: url(./imgs/timeBar.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  /* [LEGACY] background: repeating-linear-gradient(90deg, var(--main-blue), var(--main-blue) 5.9px, transparent 6px, transparent 9px);*/
+}
+
+#streakPanel{
+  position: absolute;
+  right: -4.5rem;
+  bottom: 45%;
+  display: flex;
+  transform: rotate(270deg);
+  
+  #streakBar{
+    width: 56dvh;
+    height: 20px;
+    margin-top: 0.8rem;
+
+    &::-webkit-progress-value{
+      background: url(./imgs/streakBar.webp);
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    &::-moz-progress-bar{
+      background: url(./imgs/streakBar.webp);
+      background-size: cover;
+      background-repeat: no-repeat;
+      margin-top: 0;
+    }
+  }
+
+  p{
+    width: 4rem; height: 2.5rem;
+    transform: rotate(90deg);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: var(--main-blue) 2px solid;
+    border-radius: 4px;
+    background-color: #00000050;
+    font-weight: 700;
+  }
+}
+
+
+/* Inner game display ================================================================ */
+#gameContent{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  #statPanel{
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
+
+    div{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      p:nth-child(1){
+        text-transform: uppercase;
+      }
+
+      p:nth-child(2){
+        font-size: 3rem;
+      }
+    }
+  }
+  
+  #displayWrapper{
+    border-radius: 12px;
+    margin: 5rem 0 4rem;
+    padding: 4px;
+    border: var(--main-blue) 2px solid;
+    box-shadow: 0 0 16px var(--main-blue);
+  
+    #display{
+      padding: 1.25rem 1.75rem;
+      border-radius: 8px;
+      background-color: #00000030;
+      display: flex;
+      gap: 8px;
+      border: var(--main-blue) 2px solid;
+      transition: inherit;
+
+      .light{
+        width: 4rem; height: 4rem;
+      
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: transparent;
+      
+        background-image: url(./imgs/selectionLightOff.webp);
+      
+        &.color0{ background-image: url(./imgs/selectionLight0.webp); }
+        &.color1{ background-image: url(./imgs/selectionLight1.webp); }
+        &.color2{ background-image: url(./imgs/selectionLight2.webp); }
+        &.color3{ background-image: url(./imgs/selectionLight3.webp); }
+        &.color4{ background-image: url(./imgs/selectionLight4.webp); }
+        &.color5{ background-image: url(./imgs/selectionLight5.webp); }
+        &.color6{ background-image: url(./imgs/selectionLight6.webp); }
+        &.color7{ background-image: url(./imgs/selectionLight7.webp); }
+      }
+    }
+  }
+  
+  #inputPanel{
+    background-color: #00000050;
+    border: #ffffffcc 1px solid;
+    padding: 1rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 12px white;
+
+    .keycap{
+      width: 4.5rem; height: 3.5rem;
+      
+      border: none;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-color: transparent;
+      cursor: pointer;
+
+      &:hover{
+        filter: drop-shadow(0 0 8px #ffffff80);
+      }
+    
+      &#key0{ background-image: url(./imgs/keyCap0.webp); }
+      &#key1{ background-image: url(./imgs/keyCap1.webp); }
+      &#key2{ background-image: url(./imgs/keyCap2.webp); }
+      &#key3{ background-image: url(./imgs/keyCap3.webp); }
+      &#key4{ background-image: url(./imgs/keyCap4.webp); }
+      &#key5{ background-image: url(./imgs/keyCap5.webp); }
+      &#key6{ background-image: url(./imgs/keyCap6.webp); }
+      &#key7{ background-image: url(./imgs/keyCap7.webp); }
+    
+      &:active, &.active{
+        &#key0{ background-image: url(./imgs/keyCapPressed0.webp); }
+        &#key1{ background-image: url(./imgs/keyCapPressed1.webp); }
+        &#key2{ background-image: url(./imgs/keyCapPressed2.webp); }
+        &#key3{ background-image: url(./imgs/keyCapPressed3.webp); }
+        &#key4{ background-image: url(./imgs/keyCapPressed4.webp); }
+        &#key5{ background-image: url(./imgs/keyCapPressed5.webp); }
+        &#key6{ background-image: url(./imgs/keyCapPressed6.webp); }
+        &#key7{ background-image: url(./imgs/keyCapPressed7.webp); }
+      }
+    }
+  }
+}
+
+
+/* Animations ======================================================================== */
+  #displayWrapper{
+    transition: border 1s, box-shadow 1s;
+  }
+
+  /* Correct */
+  #gameContent.correct #displayWrapper, #gameView.correct #display{
+    --main-blue: var(--color-correct);
+    transition: none;
+  }
+
+  /* Incorrect */
+  #gameContent.incorrect #displayWrapper, #gameView.incorrect #display{
+    --main-blue: var(--color-incorrect);
+    transition: none;
+  }
+
+  /* Level up */
+  #gameContent.golden #displayWrapper, #gameView.golden #display{
+    --main-blue: var(--color-golden);
+    transition: none;
+  }
