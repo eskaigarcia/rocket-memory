@@ -6,15 +6,17 @@ const
 level = {
     id: 0,
     base: 4,
-    exp: 6,
-    speed: 600,
+    exp: 4,
+    baseSpeed: 500,
+    speed: 1000,
     time: 10000,
     pitchShift: 2,
     reward: 175,
 
     loadlevel(which) {
         // Load values from levelInformation into the level object
-    }
+    },
+
 },
 
 timer = {
@@ -22,13 +24,15 @@ timer = {
     
     timer: 0,
     lastTime: null,
-    tickingActive: true,
-    paused: false,
+    tickingActive: false,
+    paused: true,
 
     enableTicking() {
         timer.tickingActive = true;
-        this.lastTime = Date.now();
-        this.tick();
+        timer.lastTime = Date.now();
+        timer.tick().bind(this);
+        timer.pause();
+        timer.reset();
     },
 
     disableTicking() {
@@ -47,6 +51,12 @@ timer = {
         timer.timer = level.time;
     },
 
+    // TODO: BUGGED SERVICE
+    rampSpeed() {
+        (round.streak < 26) ? (level.speed=level.baseSpeed-(round.streak*6)) : (level.speed=level.baseSpeed-(150+((round.streak-25)*3)));
+        console.log(level.speed);
+    },
+
     tick() {
         if(!this.tickingActive) return;
         const now = Date.now();
@@ -55,10 +65,11 @@ timer = {
         if (!this.paused) { this.timer -= delta; }
         this.updateDisplay();
         requestAnimationFrame(this.tick.bind(this));
+        if(timer.timer <= 0) round.end('lost');
     },
 
     updateDisplay() {
-        document.getElementById('timeBar').value = timer.timer / level.time;
+        document.getElementById('timeBar').value = timer.timer / level.time * 100;
     }
 },
 
@@ -80,6 +91,8 @@ round = {
         this.start();
         this.updateLives();
         this.updatePoints();
+        timer.reset();
+        timer.enableTicking();
     },
 
     start() {
@@ -110,6 +123,7 @@ round = {
     selectionDisplayNext() {
         if(this.displayCount >= level.base) {
             clearInterval(this.displayTimer);
+            timer.resume();
             return;
         }
 
@@ -140,7 +154,7 @@ round = {
     },
 
     end(veredict) {
-
+        timer.pause();
         switch (veredict) {
             case 'win':
                 this.streak++
@@ -162,6 +176,7 @@ round = {
                 break;
         }
 
+        timer.reset(); timer.rampSpeed();
         this.updateLives(); this.updatePoints(); this.updateStreak();
         this.lives > 0 ? setTimeout(round.start, level.speed * 2) : gameView.defeat();
     },
@@ -184,6 +199,7 @@ round = {
         level.loadlevel(level.id + 1);
         round.innerStreak = 0;
         setTimeout(round.start, level.speed * 2);
+        timer.reset();
     },
 
 },
@@ -213,12 +229,10 @@ pointConsole = {
     },
 
     timeMultiplier() {
-        // return 1/(1-( timer.time? / level.time)+0.31)-0.5;
-        return 1;
+        return 1/(1-( timer.timer / level.time)+0.31)-0.5;
     },
 
     streakMultiplier() {
-        console.log(round.streak);
         if(round.streak < 50){
             if(round.streak < 4) return 1;
             if(round.streak == 4) return 1.1;

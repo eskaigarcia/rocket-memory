@@ -82,12 +82,12 @@ progress{
 
   &::-webkit-progress-value{
     background: url(./imgs/timeBar.webp);
-    background-size: cover;
+    background-size: 65dvh;
     background-repeat: no-repeat;
   }
   &::-moz-progress-bar{
     background: url(./imgs/timeBar.webp);
-    background-size: cover;
+    background-size: 65dvh;
     background-repeat: no-repeat;
   }
 
@@ -108,13 +108,13 @@ progress{
 
     &::-webkit-progress-value{
       background: url(./imgs/streakBar.webp);
-      background-size: cover;
+      background-size: 56dvh;
       background-repeat: no-repeat;
     }
 
     &::-moz-progress-bar{
       background: url(./imgs/streakBar.webp);
-      background-size: cover;
+      background-size: 56dvh;
       background-repeat: no-repeat;
       margin-top: 0;
     }
