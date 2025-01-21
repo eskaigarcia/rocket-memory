@@ -18,7 +18,23 @@
 
     <div id="topFov"></div>
     <main>
-        <div id="gameView">
+        <div id="menuView">
+            <div id="levelSelect">
+                <button onclick="UIConsole.loadLevel(0)">0</button>
+                <button onclick="UIConsole.loadLevel(1)">1</button>
+                <button onclick="UIConsole.loadLevel(2)">2</button>
+                <button onclick="UIConsole.loadLevel(3)">3</button>
+                <button onclick="UIConsole.loadLevel(4)">4</button>
+                <button onclick="UIConsole.loadLevel(5)">5</button>
+                <button onclick="UIConsole.loadLevel(6)">6</button>
+                <button onclick="UIConsole.loadLevel(7)">7</button>
+                <button onclick="UIConsole.loadLevel(8)">8</button>
+                <button onclick="UIConsole.loadLevel(9)">9</button>
+                <button onclick="UIConsole.loadLevel(10)">10</button>
+                <button onclick="UIConsole.loadLevel(11)">11</button>
+            </div>
+        </div>
+        <div id="gameView" style="display: none;">
             <progress id="timeBar" max="100" value="100"></progress>
             <div id="gameContent">
                 <div id="statPanel">

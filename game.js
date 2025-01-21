@@ -7,14 +7,21 @@ level = {
     id: 0,
     base: 4,
     exp: 4,
-    baseSpeed: 500,
+    reward: 50,
+    baseSpeed: 1000,
     speed: 1000,
-    time: 10000,
+    time: 15000,
     pitchShift: 2,
-    reward: 175,
 
-    loadlevel(which) {
-        // Load values from levelInformation into the level object
+    load(which) {
+        level.id = levelInformation[which].id
+        level.base = levelInformation[which].base
+        level.exp = levelInformation[which].exp
+        level.reward = levelInformation[which].reward
+        level.baseSpeed = levelInformation[which].baseSpeed
+        level.time = levelInformation[which].time
+        document.getElementById('level').textContent = level.id + 1;
+        timer.reset();
     },
 
 },
@@ -30,7 +37,7 @@ timer = {
     enableTicking() {
         timer.tickingActive = true;
         timer.lastTime = Date.now();
-        timer.tick().bind(this);
+        timer.tick.bind(this)();
         timer.pause();
         timer.reset();
     },
@@ -51,10 +58,8 @@ timer = {
         timer.timer = level.time;
     },
 
-    // TODO: BUGGED SERVICE
     rampSpeed() {
         (round.streak < 26) ? (level.speed=level.baseSpeed-(round.streak*6)) : (level.speed=level.baseSpeed-(150+((round.streak-25)*3)));
-        console.log(level.speed);
     },
 
     tick() {
@@ -178,7 +183,7 @@ round = {
 
         timer.reset(); timer.rampSpeed();
         this.updateLives(); this.updatePoints(); this.updateStreak();
-        this.lives > 0 ? setTimeout(round.start, level.speed * 2) : gameView.defeat();
+        this.lives > 0 ? setTimeout(round.start, level.speed * 2) : UIConsole.displayDefeat();
     },
 
     updateLives() {
@@ -196,7 +201,8 @@ round = {
 
     levelUp() {
         if(round.innerStreak < 5) return;
-        level.loadlevel(level.id + 1);
+        if(player.unlocks == level.id) player.unlocks++
+        level.load(level.id + 1);
         round.innerStreak = 0;
         setTimeout(round.start, level.speed * 2);
         timer.reset();
@@ -204,22 +210,38 @@ round = {
 
 },
 
-gameView = {
-    levelSelect() {
+UIConsole = {
+    currentlyOn: 'levelSelect',
+
+    loadMenu() {
         timer.disableTicking();
     },
 
-    roundPlay() {
+    loadLevel(which) {
+        if(which > player.unlocks) return;
+        this.currentlyOn = 'ingame';
+        level.load(which);
         timer.enableTicking();
+        
+        document.getElementById('menuView').style.display = 'none';
+        document.getElementById('gameView').style.display = '';
+
+        round.renderEmpty();
+        round.cleanStart();
     },
 
-    defeat() {
+    displayDefeat() {
+        this.currentlyOn = 'killscreen'
         pointConsole.HighScore();
         alert('Has perdido pero aún no tengo hecha esa función jiji.');
     },
 
-    menu() {
-        timer.disableTicking();
+    openSettings() {
+        
+    },
+
+    exitSettings() {
+        
     }
 },
 
@@ -229,7 +251,7 @@ pointConsole = {
     },
 
     timeMultiplier() {
-        return 1/(1-( timer.timer / level.time)+0.31)-0.5;
+        return 1/(1-( timer.timer / level.time )+0.31)-0.5;
     },
 
     streakMultiplier() {

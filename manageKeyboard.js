@@ -3,6 +3,8 @@ document.addEventListener('keydown', function(event) {
 });
 
 function pressKey(code) {
+    if(UIConsole.currentlyOn != 'ingame') return;
+    
     switch (code) {
         case 'KeyA':
             round.makeInput(0);
