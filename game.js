@@ -142,13 +142,14 @@ round = {
             return;
         }
 
-        let i = this.displayCount
+        let i = this.displayCount;
         document.querySelector(`#display #light${i}`).classList.add(`color${this.selection[i]}`)
         playSound('note', this.selection[i]);
         this.displayCount++;
     },
 
     hideSelection() {
+        timer.resume();
         this.selectionHidden = true;
         this.renderEmpty();
         this.displayCount = 0;
@@ -214,7 +215,10 @@ round = {
         if(player.unlocks == level.id) player.unlocks++
         level.load(level.id + 1);
         round.innerStreak = 0;
-        setTimeout(round.start, level.speed * 2);
+        colorFlash('golden');
+        round.renderEmpty();
+        clearInterval(round.displayTimer);
+        setTimeout(round.start, level.speed * 1.5);
         timer.reset();
     },
 
@@ -228,8 +232,22 @@ UIConsole = {
         this.hide('enableSound');
     },
 
+    pause() {
+        timer.paused = true;
+        this.display('pauseScreen');
+    },
+
+    unPause() {
+        timer.paused = false;
+    },
+
     loadMenu() {
+        this.currentlyOn = 'levelSelect';
+        timer.paused = true;
         timer.disableTicking();
+        this.display('menuView','flex');
+        this.hide('gameView');
+        level.updateUnlocks();
     },
 
     loadLevel(which) {
@@ -238,8 +256,8 @@ UIConsole = {
         level.load(which);
         timer.enableTicking();
         
-        document.getElementById('menuView').style.display = 'none';
-        document.getElementById('gameView').style.display = '';
+        this.hide('menuView');
+        this.display('gameView', 'flex');
 
         round.renderEmpty();
         round.cleanStart();
@@ -263,11 +281,14 @@ UIConsole = {
         document.getElementById(id).classList.add('fadeOut');
         setTimeout(() => {
             document.getElementById(id).style.display = 'none';
+            document.getElementById(id).classList.remove('fadeOut');
         }, 600);
     },
 
     display(id, type='flex') {
-        document.getElementById(id).style.display = type;
+        setTimeout(() => {
+            document.getElementById(id).style.display = type;
+        }, 600)
     }
 },
 

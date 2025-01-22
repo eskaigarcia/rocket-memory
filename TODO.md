@@ -1,4 +1,4 @@
-- Design and code Level select menu
-- Implement quick level up button and key shortcut
-- Implement back to menu feature
 - Improve UIConsole and reorganize methods
+- Design and implement buttons for back to menu and quick level up
+- Implement Highscore on menuview
+- Save player data to localstorage

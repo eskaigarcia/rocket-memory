@@ -4,7 +4,7 @@ document.addEventListener('keydown', function(event) {
 
 function pressKey(code) {
     if(UIConsole.currentlyOn != 'ingame') return;
-    
+
     switch (code) {
         case 'KeyA':
             round.makeInput(0);
@@ -39,10 +39,11 @@ function pressKey(code) {
             simulateButtonPress(7);
             break;
         case 'Enter':
-            // Not yet implemented
+            round.levelUp();
             break;
         case 'Escape':
-            // Not yet implemented
+            UIConsole.loadMenu();
+            // Change to pause
             break;
         case 'Space':
             round.hideSelection();

@@ -7,6 +7,4 @@ This proyect doesn't use any framework as its objective was to test out my skill
 
 ## Features in progress
 - English translation
-- Level selection
-- Level timer
 - Settings page
