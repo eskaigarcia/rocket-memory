@@ -1,3 +1,5 @@
+// Play any sound on the website library
+// Types are: in, out, up, note
 function playSound(type, pitch) {
     if(!player.sound) return;
     const sound = document.getElementById(`sfx_${type}${pitch+level.pitchShift}`);

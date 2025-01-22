@@ -2,3 +2,5 @@
 - Design and implement buttons for back to menu and quick level up
 - Implement Highscore on menuview
 - Save player data to localstorage
+- Make pause screen, don't go directly into settings
+- Hide or display unused keys in a level

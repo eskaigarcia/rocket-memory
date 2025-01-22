@@ -8,3 +8,4 @@ This proyect doesn't use any framework as its objective was to test out my skill
 ## Features in progress
 - English translation
 - Settings page
+- Bug fixes

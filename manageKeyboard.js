@@ -48,12 +48,12 @@ function pressKey(code) {
         case 'Space':
             round.hideSelection();
             break;
-        case 'KeyR':
-            round.cleanStart();
-            break;
     }
 }
 
+// TODO: Add key shortcuts for game restart and demonstration cheatcodes
+
+// Visualize keyboard buttons on screen
 function simulateButtonPress(button) {
     document.getElementById(`key${button}`).classList.add('active');
     setTimeout(function() { document.getElementById(`key${button}`).classList.remove('active'); }, 200);

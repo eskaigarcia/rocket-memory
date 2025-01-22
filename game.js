@@ -1,19 +1,17 @@
-const
-display = document.getElementById('display');
-
-
 const 
 level = {
+    // Information on the active level, loads levelInformation from storage.js
     id: 0,
     base: 4,
     exp: 4,
     reward: 50,
     baseSpeed: 1000,
-    speed: 1000,
+    speed: 1000,            // Gets copied from baseSpeed to be easily modified by ramping
     time: 15000,
-    pitchShift: 2,
+    pitchShift: 2,          // [0-7] currently unused, might move to player settings
 
     load(which) {
+        // Load levelInformation from storage.js
         level.id = levelInformation[which].id
         level.base = levelInformation[which].base
         level.exp = levelInformation[which].exp
@@ -24,26 +22,37 @@ level = {
         timer.reset();
     },
 
-    updateUnlocks(){
-        for (i = 0; i <= player.unlocks; i++) {
-            document.getElementById(`buttonLevel${i}`).classList.add('unlocked')
-        };
-
-        for (i = player.unlocks+1; i <12; i++) {
-            document.getElementById(`buttonLevel${i}`).classList.add('locked')
-        };
-    }
-
 },
 
 timer = {
-    // Credit for the basenline idea: https://codepen.io/samanime/pen/LYjOvpd
-    
     timer: 0,
     lastTime: null,
     tickingActive: false,
     paused: true,
 
+    tick() {
+        // Credit for the ticking implementation: https://codepen.io/samanime/pen/LYjOvpd
+        if(!this.tickingActive) return;
+        const now = Date.now();
+        const delta = now - this.lastTime;
+        this.lastTime = now;
+        if (!this.paused) { this.timer -= delta; }
+        this.updateTimeBar();
+        requestAnimationFrame(this.tick.bind(this));
+        if(timer.timer <= 0) round.end('lost');
+    },
+
+    updateTimeBar() {
+        // Updates the left progress bar on gameView with the timer
+        document.getElementById('timeBar').value = timer.timer / level.time * 100;
+    },
+
+    rampSpeed() {
+        // Reduces speed delay making levels faster as 
+        (round.streak < 26) ? (level.speed=level.baseSpeed-(round.streak*15)) : (level.speed=level.baseSpeed-(375+((round.streak-25)*8)));
+    }, 
+
+    // Management methods
     enableTicking() {
         timer.tickingActive = true;
         timer.lastTime = Date.now();
@@ -51,66 +60,34 @@ timer = {
         timer.pause();
         timer.reset();
     },
-
     disableTicking() {
         timer.tickingActive = false;
     },
-
     pause() {
         timer.paused = true;
     },
-
     resume() {
         timer.paused = false;
     },
-
     reset() {
         timer.timer = level.time;
     },
-
-    rampSpeed() {
-        (round.streak < 26) ? (level.speed=level.baseSpeed-(round.streak*6)) : (level.speed=level.baseSpeed-(150+((round.streak-25)*3)));
-    },
-
-    tick() {
-        if(!this.tickingActive) return;
-        const now = Date.now();
-        const delta = now - this.lastTime;
-        this.lastTime = now;
-        if (!this.paused) { this.timer -= delta; }
-        this.updateDisplay();
-        requestAnimationFrame(this.tick.bind(this));
-        if(timer.timer <= 0) round.end('lost');
-    },
-
-    updateDisplay() {
-        document.getElementById('timeBar').value = timer.timer / level.time * 100;
-    }
 },
 
 round = {
-    selectionHidden: false,
-    selection: [],
-    input: [],
+    // All methods and information required for gameplay
+    selection: [],                  // Stores correct values
+    input: [],                      // Stores user inputed values
     points: 0,
     lives: 3,
     streak: 0,
-    innerStreak: 0,
-
-    displayCount: 0,
-    displayTimer: null,
+    innerStreak: 0,                 // Amount of non-consecutive correct answers within a level. Used for leveling up
+    displayCount: 0,                // Used by selectionDisplayNext method's for loop
+    displayTimer: null,             // Used by start to call selectionDisplayNext in a loop
+    selectionHidden: false,         // Flag for switching between memory and input modes ingame
     
-    cleanStart() {
-        this.points = 0;
-        this.lives = 3;
-        this.start();
-        this.updateLives();
-        this.updatePoints();
-        timer.reset();
-        timer.enableTicking();
-    },
-
     start() {
+        // Starts each new round, resets necessary values and generates the selection to memorize
         clearInterval(round.displayTimer);
         round.renderEmpty();
         round.selectionHidden = false;
@@ -125,17 +102,20 @@ round = {
         round.displayTimer = setInterval(round.selectionDisplayNext.bind(round), level.speed);
     },
 
-    renderEmpty() {
-        display.innerHTML = '';
-        for (i=0; i<level.base; i++) {
-            let light = document.createElement('div');
-            light.className = 'light';
-            light.id = 'light'+i;
-            display.appendChild(light);
-        }
+    cleanStart() {
+        // Restores the round object to defaults for a new game run 
+        this.points = 0;
+        this.innerStreak = 0;
+        this.lives = 3;
+        this.start();
+        this.updateLives();
+        this.updatePoints();
+        timer.reset();
+        timer.enableTicking();
     },
 
     selectionDisplayNext() {
+        // Displays ONE value on central display FROM RNG SELECTION
         if(this.displayCount >= level.base) {
             clearInterval(this.displayTimer);
             timer.resume();
@@ -148,7 +128,26 @@ round = {
         this.displayCount++;
     },
 
+    inputDisplayNext() {
+        // Displays ONE value on central display FROM USER INPUT
+        document.querySelector(`#display #light${this.displayCount}`).classList.add(`color${this.input[this.displayCount]}`)
+        this.displayCount++;
+    },
+
+    renderEmpty() {
+        // Restores central display to blank values
+        const display = document.getElementById('display');
+        display.innerHTML = '';
+        for (i=0; i<level.base; i++) {
+            let light = document.createElement('div');
+            light.className = 'light';
+            light.id = 'light'+i;
+            display.appendChild(light);
+        }
+    },
+
     hideSelection() {
+        // Once selection is memorized: resumes timer and cleans up values
         timer.resume();
         this.selectionHidden = true;
         this.renderEmpty();
@@ -157,32 +156,31 @@ round = {
     },
 
     makeInput(input) {
-        if(!this.selectionHidden) this.hideSelection();
-        this.input.push(input);
-        this.inputDisplayNext();
-        playSound('note', input)
-        if(this.input.length == this.selection.length) this.input.toString() == this.selection.toString() ? this.end('win') : this.end('lost');
-    },
-
-    inputDisplayNext() {
-        document.querySelector(`#display #light${this.displayCount}`).classList.add(`color${this.input[this.displayCount]}`)
-        this.displayCount++;
+        // Transforms user input into a color displayed in the central display.
+        if(!this.selectionHidden) this.hideSelection();         // Test if selection hasn't already been hidden
+        this.input.push(input);                                 // Save input to array
+        this.inputDisplayNext();                                // Display user input
+        playSound('note', input);                               // Play corresponding sound
+        if(this.input.length == this.selection.length) {        // If full input is detected, test for correct or incorrect
+            this.input.toString() == this.selection.toString() ? this.end('win') : this.end('lost');
+        }
     },
 
     end(veredict) {
+        // Finish a round, apply victory or defeat
         timer.pause();
         switch (veredict) {
             case 'win':
                 this.streak++
                 this.innerStreak++
                 pointConsole.give();
-                if (this.innerStreak < 10) {
-                    colorFlash()
-                } else {
+                if (this.innerStreak >= 10 && level.id < 12) { 
                     colorFlash('golden')
-                    this.updateLives(); this.updatePoints(); this.updateStreak();
+                    this.updateStats();
                     this.levelUp();
                     return;
+                } else {
+                    colorFlash();
                 }
                 break;
             case 'lost':
@@ -192,27 +190,27 @@ round = {
                 break;
         }
 
-        timer.reset(); timer.rampSpeed();
-        this.updateLives(); this.updatePoints(); this.updateStreak();
+        // Update stats and inner values for next round
+        timer.reset();
+        timer.rampSpeed();
+        this.updateStats();
+        
+        // Start next round if enough lives available
         this.lives > 0 ? setTimeout(round.start, level.speed * 2) : UIConsole.displayDefeat();
     },
 
-    updateLives() {
+    updateStats() {
+        // Update displayed stats
         document.getElementById('lives').textContent = this.lives;
-    },
-
-    updatePoints() {
         document.getElementById('points').textContent = this.points.toFixed(0);
-    },
-
-    updateStreak() {
         document.getElementById('currentStreak').textContent = this.streak;
         document.getElementById('streakBar').value = Math.min(100, this.streak * 2.5);
     },
 
     levelUp() {
-        if(round.innerStreak < 5) return;
-        if(player.unlocks == level.id) player.unlocks++
+        // Load next level and start a round in it
+        if(round.innerStreak < 5) return;                   // Only allow level up if 5 correct answers in the level
+        if(player.unlocks == level.id) player.unlocks++     // Unlock the level in player's save in first access
         level.load(level.id + 1);
         round.innerStreak = 0;
         colorFlash('golden');
@@ -224,83 +222,16 @@ round = {
 
 },
 
-UIConsole = {
-    currentlyOn: 'levelSelect',
-
-    startSound(enabled){
-        (enabled) ? player.sound = true : player.sound = false ;
-        this.hide('enableSound');
-    },
-
-    pause() {
-        timer.paused = true;
-        this.display('pauseScreen');
-    },
-
-    unPause() {
-        timer.paused = false;
-    },
-
-    loadMenu() {
-        this.currentlyOn = 'levelSelect';
-        timer.paused = true;
-        timer.disableTicking();
-        this.display('menuView','flex');
-        this.hide('gameView');
-        level.updateUnlocks();
-    },
-
-    loadLevel(which) {
-        if(which > player.unlocks) return;
-        this.currentlyOn = 'ingame';
-        level.load(which);
-        timer.enableTicking();
-        
-        this.hide('menuView');
-        this.display('gameView', 'flex');
-
-        round.renderEmpty();
-        round.cleanStart();
-    },
-
-    displayDefeat() {
-        this.currentlyOn = 'killscreen'
-        pointConsole.HighScore();
-        alert('Has perdido pero aún no tengo hecha esa función jiji.');
-    },
-
-    openSettings() {
-        
-    },
-
-    exitSettings() {
-        
-    },
-
-    hide(id) {
-        document.getElementById(id).classList.add('fadeOut');
-        setTimeout(() => {
-            document.getElementById(id).style.display = 'none';
-            document.getElementById(id).classList.remove('fadeOut');
-        }, 600);
-    },
-
-    display(id, type='flex') {
-        setTimeout(() => {
-            document.getElementById(id).style.display = type;
-        }, 600)
-    }
-},
-
 pointConsole = {
+    // Point management for gameplay rewards
+
     give() {
+        // Calculates reward based on 3 non-linear parameters and adds to gameplay total
         round.points += pointConsole.timeMultiplier() * level.reward * pointConsole.streakMultiplier();
     },
-
     timeMultiplier() {
         return 1/(1-( timer.timer / level.time )+0.31)-0.5;
     },
-
     streakMultiplier() {
         if(round.streak < 50){
             if(round.streak < 4) return 1;
@@ -318,7 +249,8 @@ pointConsole = {
         }
     },
 
-    HighScore() {
+    highScore() {
+        // Save round.points if a new highscore is achieved
         if(round.points > player.highScore) player.highScore = round.points;
     },
 };

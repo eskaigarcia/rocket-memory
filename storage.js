@@ -1,3 +1,4 @@
+// Information on a player's game save
 const
 player = {
     unlocks: 0,
@@ -5,6 +6,7 @@ player = {
     sound: true,
 }
 
+// Information on all level configurations
 const
 levelInformation = [
     {
@@ -88,7 +90,7 @@ levelInformation = [
         time: 10500,
     },
     {
-        id: 9,
+        id: 10,
         base: 7,
         exp: 8,
         reward: 8500,
@@ -96,7 +98,7 @@ levelInformation = [
         time: 11000,
     },
     {
-        id: 10,
+        id: 11,
         base: 8,
         exp: 8,
         reward: 12000,
@@ -104,7 +106,7 @@ levelInformation = [
         time: 11500,
     },
     {
-        id: 11,
+        id: 12,
         base: 9,
         exp: 8,
         reward: 25000,

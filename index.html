@@ -24,9 +24,10 @@
 </head>
 <body onload="level.updateUnlocks()">
 
+    <!-- Initial popup to gather user interaction and enable sound (if desired) -->
     <div id="enableSound">
         <div>
-            <h2>¿Deseas activar sonido?</h2>
+            <h2>¿Activar el sonido?</h2>
             <p>Rocket memory está pensado para jugar con audio.</p>
             <div>
                 <button class="secondary" onclick="UIConsole.startSound(false)">No</button>
@@ -37,9 +38,10 @@
 
     <div id="topFov"></div>
     <main>
+        <!-- Main level selection screen -->
         <div id="menuView">
             <img src="./imgs/logoHorizontal.webp">
-            <p>Highscore: <span id="displayHighscore">0</span></p>
+            <p>Highscore: <span id="displayHighScore">0</span></p>
             <div id="levelSelect">
                 <div>
                     <button id="buttonLevel0" onclick="UIConsole.loadLevel(0)">1</button>
@@ -48,17 +50,19 @@
                     <button id="buttonLevel3" onclick="UIConsole.loadLevel(3)">4</button>
                     <button id="buttonLevel4" onclick="UIConsole.loadLevel(4)">5</button>
                     <button id="buttonLevel5" onclick="UIConsole.loadLevel(5)">6</button>
+                    <button id="buttonLevel6" onclick="UIConsole.loadLevel(6)">7</button>
                 </div>
                 <div>
-                    <button id="buttonLevel6" onclick="UIConsole.loadLevel(6)">7</button>
                     <button id="buttonLevel7" onclick="UIConsole.loadLevel(7)">8</button>
                     <button id="buttonLevel8" onclick="UIConsole.loadLevel(8)">9</button>
                     <button id="buttonLevel9" onclick="UIConsole.loadLevel(9)">10</button>
                     <button id="buttonLevel10" onclick="UIConsole.loadLevel(10)">11</button>
                     <button id="buttonLevel11" onclick="UIConsole.loadLevel(11)">12</button>
+                    <button id="settings">Settings</button>
                 </div>
             </div>
         </div>
+        <!-- Main gameplay screen -->
         <div id="gameView" style="display: none;">
             <progress id="timeBar" max="100" value="100"></progress>
             <div id="gameContent">
@@ -90,6 +94,10 @@
                     <button class="keycap" id="key6" onclick="round.makeInput(6)"></button>
                     <button class="keycap" id="key7" onclick="round.makeInput(7)"></button>
                 </div>
+                <div>
+                    <button onclick="UIConsole.pause()">[ESC] Pause</button>
+                    <button onclick="round.levelUp()">Level up [ENTER]</button>
+                </div> 
             </div>
             <div id="streakPanel">
                 <p id="currentStreak">0</p>
@@ -99,6 +107,9 @@
     </main>
     <div id="bottomFov"></div>
 
+    <!-- TODO: Settinigs page -->
+
+    <!-- Sound engine -->
     <div id="sfx" style="display: none;">
         <audio id="sfx_in0" src="./sounds/in0.mp3"></audio>
         <audio id="sfx_in1" src="./sounds/in1.mp3"></audio>
@@ -159,9 +170,11 @@
         <audio id="sfx_note14" src="./sounds/note14.mp3"></audio>
     </div>
 
+    <!-- Javscript -->
     <script src="game.js"></script>
     <script src="library.js"></script>
     <script src="storage.js"></script>
     <script src="manageKeyboard.js"></script>
+    <script src="interface.js"></script>
 </body>
 </html>
