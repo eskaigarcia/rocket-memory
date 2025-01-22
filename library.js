@@ -8,8 +8,8 @@ function playSound(type, pitch) {
 // Flashes a color to give Feedback to the user - Available options are:
 // [Default] correct: green, incorrect: red, golden: yellow
 function colorFlash(color = 'correct') {
-    document.getElementById('gameContent').classList.add(color);
+    document.getElementById('gameView').classList.add(color);
     setTimeout(() => { 
-        document.getElementById('gameContent').classList.remove(color);
+        document.getElementById('gameView').classList.remove(color);
     }, 200);
 }

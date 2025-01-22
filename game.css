@@ -46,14 +46,130 @@ main{
   place-items: center;
 }
 
+/* Style kit ========================================================================= */
+button.primary{
+  padding: 0.5rem 2rem;
+  margin: 0 1rem;
+  background-color: var(--main-blue);
+  border: var(--main-blue) 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
 
-/* Gameplay content ================================================================== */
-#gameView{
+  &:hover{
+    background-color: #c1f0f4;
+    box-shadow: 0 0 16px var(--main-blue);
+  }
+}
+
+button.secondary{
+  padding: 0.5rem 2rem;
+  margin: 0 1rem;
+  background-color: transparent;
+  border: var(--main-blue) 2px solid;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #108bbf;
+    box-shadow: 0 0 16px var(--main-blue);
+  }
+}
+
+/* Enable sound initial pop-up ======================================================= */
+#enableSound{
+  width: 100dvw; height: 100dvh;
+  position: fixed;
   display: flex;
+  align-content: center;
+  justify-content: center;
+  overflow: none;
+  z-index: 9;
+  color: white;
+  font-family: "JetBrains Mono", monospace;
+  background-image: url(./imgs/soundBackdrop.webp);
+  background-position: center;
+  background-size: cover;
+
+  > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  h2{
+    font-size: 2.5rem;
+  }
+
+  p, button{
+    font-size: 1.25rem;
+  }
+}
+
+/* Menu ============================================================================== */
+
+#menuView{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+
+  img{
+    width: 30dvw;
+    margin-bottom: 3rem;
+  }
+
+  p{
+    text-align: center;
+    font-style: italic;
+    font-size: 2rem;
+
+    span{
+      font-weight: bold;
+    }
+  }
+
+  #levelSelect{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    button{
+      width: 5rem;
+      height: 3.5rem;
+      margin: 0.5rem;
+      font-size: 2rem;
+      font-weight: bold;
+      font-style: italic;
+      background-color: transparent;
+      border: var(--main-blue) 2px solid;
+      border-radius: 4px;
+    }
+
+    button.locked{
+      background-color: #06ced95e;
+      cursor: not-allowed;
+    }
+  
+    button.unlocked{
+      background-color: var(--main-blue);
+      cursor: pointer;
+
+      &:hover{
+        box-shadow: 0 0 16px var(--main-blue);
+      }
+    }
+  }  
 }
 
 
-/* Progress bars ===================================================================== */
+/* Gameplay content ================================================================== */
+
+/* Progress bars ================================================= */
 progress{
   --color: var(--main-blue);
 
@@ -91,7 +207,6 @@ progress{
     background-repeat: no-repeat;
   }
 
-  /* [LEGACY] background: repeating-linear-gradient(90deg, var(--main-blue), var(--main-blue) 5.9px, transparent 6px, transparent 9px);*/
 }
 
 #streakPanel{
@@ -120,6 +235,10 @@ progress{
     }
   }
 
+  #currentStreak{
+    border: var(--main-blue) 2px solid;
+  }
+
   p{
     width: 4rem; height: 2.5rem;
     transform: rotate(90deg);
@@ -128,7 +247,7 @@ progress{
     justify-content: center;
     align-items: center;
 
-    border: var(--main-blue) 2px solid;
+    
     border-radius: 4px;
     background-color: #00000050;
     font-weight: 700;
@@ -136,7 +255,7 @@ progress{
 }
 
 
-/* Inner game display ================================================================ */
+/* Inner game display ============================================ */
 #gameContent{
   display: flex;
   flex-direction: column;
@@ -250,24 +369,31 @@ progress{
 
 
 /* Animations ======================================================================== */
-  #displayWrapper{
+  #displayWrapper, #currentStreak{
     transition: border 1s, box-shadow 1s;
   }
 
   /* Correct */
-  #gameContent.correct #displayWrapper, #gameView.correct #display{
+  #gameView.correct #displayWrapper, #gameView.correct #display, #gameView.correct #currentStreak{
     --main-blue: var(--color-correct);
     transition: none;
   }
 
   /* Incorrect */
-  #gameContent.incorrect #displayWrapper, #gameView.incorrect #display{
+  #gameView.incorrect #displayWrapper, #gameView.incorrect #display, #gameView.incorrect #currentStreak{
     --main-blue: var(--color-incorrect);
     transition: none;
   }
 
   /* Level up */
-  #gameContent.golden #displayWrapper, #gameView.golden #display{
+  #gameView.golden #displayWrapper, #gameView.golden #display, #gameView.golden #currentStreak{
     --main-blue: var(--color-golden);
     transition: none;
+  }
+
+  /* Fade out menu */
+  .fadeOut{
+    opacity: 0;
+    transform: scale(75%);
+    transition: all 0.5s;
   }

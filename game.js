@@ -24,6 +24,16 @@ level = {
         timer.reset();
     },
 
+    updateUnlocks(){
+        for (i = 0; i <= player.unlocks; i++) {
+            document.getElementById(`buttonLevel${i}`).classList.add('unlocked')
+        };
+
+        for (i = player.unlocks+1; i <12; i++) {
+            document.getElementById(`buttonLevel${i}`).classList.add('locked')
+        };
+    }
+
 },
 
 timer = {
@@ -213,6 +223,11 @@ round = {
 UIConsole = {
     currentlyOn: 'levelSelect',
 
+    startSound(enabled){
+        (enabled) ? player.sound = true : player.sound = false ;
+        this.hide('enableSound');
+    },
+
     loadMenu() {
         timer.disableTicking();
     },
@@ -242,6 +257,17 @@ UIConsole = {
 
     exitSettings() {
         
+    },
+
+    hide(id) {
+        document.getElementById(id).classList.add('fadeOut');
+        setTimeout(() => {
+            document.getElementById(id).style.display = 'none';
+        }, 600);
+    },
+
+    display(id, type='flex') {
+        document.getElementById(id).style.display = type;
     }
 },
 
