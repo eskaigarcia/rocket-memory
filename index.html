@@ -16,7 +16,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="reset.css">
@@ -41,7 +41,7 @@
         <!-- Main level selection screen -->
         <div id="menuView">
             <img src="./imgs/logoHorizontal.webp">
-            <p>Highscore: <span id="displayHighScore">0</span></p>
+            <!-- <p>Highscore: <span id="displayHighScore">0</span></p> -->
             <div id="levelSelect">
                 <div>
                     <button id="buttonLevel0" onclick="UIConsole.loadLevel(0)">1</button>
@@ -50,15 +50,18 @@
                     <button id="buttonLevel3" onclick="UIConsole.loadLevel(3)">4</button>
                     <button id="buttonLevel4" onclick="UIConsole.loadLevel(4)">5</button>
                     <button id="buttonLevel5" onclick="UIConsole.loadLevel(5)">6</button>
-                    <button id="buttonLevel6" onclick="UIConsole.loadLevel(6)">7</button>
                 </div>
                 <div>
+                    <button id="buttonLevel6" onclick="UIConsole.loadLevel(6)">7</button>
                     <button id="buttonLevel7" onclick="UIConsole.loadLevel(7)">8</button>
                     <button id="buttonLevel8" onclick="UIConsole.loadLevel(8)">9</button>
                     <button id="buttonLevel9" onclick="UIConsole.loadLevel(9)">10</button>
                     <button id="buttonLevel10" onclick="UIConsole.loadLevel(10)">11</button>
                     <button id="buttonLevel11" onclick="UIConsole.loadLevel(11)">12</button>
-                    <button id="settings" class="double"><img src="imgs/settings.png">Ajustes</button>
+                </div>
+                <div>
+                    <button id="settings" class="triple" onclick="UIConsole.openStats()"><img src="imgs/stats.png">Estadísticas</button>
+                    <button id="settings" class="triple" onclick="UIConsole.openSettings()"><img src="imgs/settings.png">Configuración</button>
                 </div>
             </div>
         </div>
@@ -107,13 +110,52 @@
     </main>
     <div id="bottomFov"></div>
 
-    <!-- TODO: Settinigs page -->
+    <!-- TODO: Settings page -->
     <div id="settingsView">
+        <div>
+            <h1>Ajustes</h1>
+            <img src="./imgs/exit.png" onclick="UIConsole.exitSettings()">
+        </div><hr>
+        <div>
+            <p>Volumen</p>
+            <div>
+                <input type="radio" name="volume" id="volumeOn">
+                <label for="volumeOn">Encendido</label>
+            </div>
+            <div>
+                <input type="radio" name="volume" id="volumeOff">
+                <label for="volumeOff">Apagado</label>
+            </div>
+        </div>
+        <p>Cambiar idioma: <em>Próximamente</em></p>
+        <button onclick="player.restart()">Borrar partida</button>
+    </div>
 
+    <!-- Stats page -->
+    <div id="statsView">
+        <div>
+            <h1>Estadísticas</h1>
+            <img src="./imgs/exit.png" onclick="UIConsole.exitStats()">
+        </div><hr>
+        <p>Highscore: <span id="statsHigscore">0</span></p>
+        <p>Partidas jugadas: <span id="statsGames">0</span></p>
+        <p>Rodas jugadas: <span id="statsRounds">0</span></p>
+        <p>Rondas ganadas: <span id="statsWins">0</span></p>
+        <p>Rodas perdidas por fallos: <span id="statsLosts">0</span></p>
+        <p>Rodas perdidas por tiempo: <span id="statsTimeouts">0</span></p>
     </div>
     
-    <!-- TODO: Pause screen -->
-    <div id="pausedView">
+    <!-- Pause screen -->
+    <div id="pauseView">
+        <h1>PAUSA</h1>
+        <div>
+            <button class="red" onclick="UIConsole.unpause(); UIConsole.loadMenu();">Salir</button>
+            <button onclick="UIConsole.unpause()">Continuar</button>
+        </div>
+    </div>
+
+    <!-- TODO: KillScreen -->
+    <div id="killScreen">
 
     </div>
 

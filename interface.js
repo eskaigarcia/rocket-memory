@@ -1,26 +1,28 @@
 const
 UIConsole = {
     // Interface management methods
-    currentlyOn: 'levelSelect',             // Stores active screen (levelSelect, ingame, killScreen)
+    currentlyOn: 'none',                    // Stores active screen (levelSelect, ingame, killScreen)
     overlay: 'none',                        // Stores active overlay (paused, settings)
 
     startSound(enabled){
         // Handles first user input, activates or mutes sound
         // Hides sound popup to reveal game
         (enabled) ? player.sound = true : player.sound = false ;
+        this.currentlyOn = 'levelSelect';
         this.updateUnlocks();
         this.hide('enableSound');
     },
 
     pause() {
-        // TODO: Implement
+        this.overlay = 'pause';
         timer.pause();
-        this.display('pauseScreen');
+        this.display('pauseView', 'flex');
     },
 
-    unPause() {
-        // TODO: Implement
+    unpause() {
+        this.overlay = 'none';
         timer.resume();
+        this.hide('pauseView');
     },
 
     loadMenu() {
@@ -72,11 +74,29 @@ UIConsole = {
     },
 
     openSettings() {
-        // TODO: Implement
+        this.overlay = 'settings';
+        this.display('settingsView', 'block');
     },
 
     exitSettings() {
-        // TODO: Implement
+        this.overlay = 'none';
+        this.hide('settingsView');
+    },
+
+    openStats() {
+        this.overlay = 'stats';
+        this.displayOverlay('statsView', 'block');
+        document.getElementById('statsHigscore').textContent = player.highScore.toFixed(0);
+        document.getElementById('statsGames').textContent = player.gamesStarted;
+        document.getElementById('statsRounds').textContent = player.roundsPlayed;
+        document.getElementById('statsWins').textContent = player.corrects;
+        document.getElementById('statsLosts').textContent = player.incorrects;
+        document.getElementById('statsTimeouts').textContent = player.timeouts;
+    },
+
+    exitStats() {
+        this.overlay = 'none';
+        this.hide('statsView');
     },
 
     // General functions to hide and show UI Views
@@ -91,5 +111,16 @@ UIConsole = {
         setTimeout(() => {
             document.getElementById(id).style.display = type;
         }, 600)
+    },
+    displayOverlay(id, type='flex') {
+        document.getElementById(id).classList.add('fadeOut');
+        document.getElementById(id).style.display = type;
+        setTimeout(() => {
+            document.getElementById(id).classList.add('fadingIn');
+            setTimeout(() => {
+                document.getElementById(id).classList.remove('fadingIn');
+                document.getElementById(id).classList.remove('fadeOut');
+            }, 600);
+        }, 10)
     }
 }

@@ -9,6 +9,16 @@ player = {
     corrects: 0,
     incorrects: 0,
     timeouts: 0,
+
+    restart() {
+        player.unlocks = 0;
+        player.highScore = 0;
+        player.gamesStarted = 0;
+        player.roundsPlayed = 0;
+        player.corrects = 0;
+        player.incorrects = 0;
+        player.timeouts = 0;
+    },
 }
 
 // Information on all level configurations

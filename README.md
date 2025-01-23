@@ -9,3 +9,4 @@ This proyect doesn't use any framework as its objective was to test my skills be
 ## Features in progress
 - English translation
 - Settings page
+- Fix bugs

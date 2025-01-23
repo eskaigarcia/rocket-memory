@@ -3,6 +3,7 @@
   --color-correct: #06d950;
   --color-incorrect: #f33f2f;
   --color-golden: #eecb2c;
+  --color-dark: #011A19;
 }
 
 
@@ -18,6 +19,7 @@
   transform: translateX(-50%);
   background-size: cover;
   background-repeat: no-repeat;
+  z-index: 2;
 }
 #topFov{
   height: 100px;
@@ -115,7 +117,7 @@ button.secondary{
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
 
   img{
     width: 30dvw;
@@ -171,12 +173,13 @@ button.secondary{
       }
     }
 
-    button.double{
+    button.triple{
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 1.25rem;
       gap: 8px;
-      width: 11rem;
+      width: 17rem;
       letter-spacing: -10%;
       font-size: 1.25rem;
       font-style:  normal;
@@ -434,6 +437,108 @@ progress{
   }
 }
 
+/* Other menus ======================================================================= */
+
+#settingsView, #statsView{
+  display: none;
+  width: 40rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 3rem 5rem;
+  border: #108bbf 2px solid;
+  border-radius: 8px;
+  background-color: var(--color-dark);
+  color: white;
+  box-shadow: 0 0 32px black;
+
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.5rem;
+  line-height: 150%;
+
+  div{ 
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1{
+    font-family: "Chakra Petch";
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  img{
+    width: 38px;
+    padding: 12px;
+    border: 3px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover{
+      border-color: #108bbf;
+      background-color: #108bbf60;
+    }
+  }
+  hr{ margin-bottom: 2rem; }
+}
+
+/* Pause view ==================================================== */
+#pauseView {
+  display: none;
+  position: fixed;
+  top: 0;
+  width: 100dvw; height: 100dvh;
+  background-color: #011A19;
+  color: white;
+  z-index: 1;
+  background-image: url(./imgs/starBackdrop.webp);
+  background-size: cover;
+  letter-spacing: 4px;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h1{
+    font-family: "Chakra Petch";
+    font-size: 7rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  button{
+    padding: 0.75rem 2rem;
+    margin: 5rem 2rem 0;
+    font-size: 2rem;
+    border-radius: 4px;
+    background-color: #011A1960;
+    color: white;
+    border: 2px var(--main-blue) solid;
+    cursor: pointer;
+
+    &:hover{
+      background-color: var(--main-blue);
+      color: black;
+      font-style: italic;
+    }
+
+    &.red{
+      border-color: var(--color-incorrect);
+      &:hover{ 
+        background-color: red; 
+        color: white;
+      }
+    }
+  }
+}
+
+/* Settings view ================================================= */
+#settingsView {
+  font-family: inherit;
+}
+
 
 /* Animations ======================================================================== */
   #displayWrapper, #currentStreak{
@@ -462,5 +567,11 @@ progress{
   .fadeOut{
     opacity: 0;
     transform: scale(75%);
+    transition: all 0.5s;
+  }
+
+  .fadingIn{
+    opacity: 1;
+    transform: scale(100%);
     transition: all 0.5s;
   }
