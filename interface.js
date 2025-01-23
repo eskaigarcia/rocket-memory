@@ -8,25 +8,28 @@ UIConsole = {
         // Handles first user input, activates or mutes sound
         // Hides sound popup to reveal game
         (enabled) ? player.sound = true : player.sound = false ;
+        this.updateUnlocks();
         this.hide('enableSound');
     },
 
     pause() {
         // TODO: Implement
-        timer.paused = true;
+        timer.pause();
         this.display('pauseScreen');
     },
 
     unPause() {
         // TODO: Implement
-        timer.paused = false;
+        timer.resume();
     },
 
     loadMenu() {
         // Unloads gameView, returns to levelSelect menu and updates displayed items
+        clearInterval(round.displayTimer);
         this.currentlyOn = 'levelSelect';
-        timer.paused = true;
+        timer.pause();
         timer.disableTicking();
+        playSound('out', level.id)
 
         this.hide('gameView');
         this.display('menuView','flex');
@@ -56,9 +59,10 @@ UIConsole = {
         
         this.hide('menuView');
         this.display('gameView', 'flex');
+        playSound('in', level.id);
 
         round.renderEmpty();
-        round.cleanStart();
+        setTimeout(round.cleanStart.bind(round), 500)
     },
 
     displayDefeat() {

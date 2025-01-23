@@ -138,11 +138,16 @@ button.secondary{
     align-items: center;
     justify-content: center;
 
+    div{
+      display: flex;
+      align-items: center;
+    }
+
     button{
       width: 5rem;
       height: 3.5rem;
       margin: 0.5rem;
-      font-size: 2rem;
+      font-size: 1.7rem;
       font-weight: bold;
       font-style: italic;
       background-color: transparent;
@@ -153,6 +158,7 @@ button.secondary{
     button.locked{
       background-color: #06ced95e;
       cursor: not-allowed;
+      color: white;
     }
   
     button.unlocked{
@@ -161,6 +167,31 @@ button.secondary{
 
       &:hover{
         background-color: #c1f0f4;
+        box-shadow: 0 0 16px var(--main-blue);
+      }
+    }
+
+    button.double{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 11rem;
+      letter-spacing: -10%;
+      font-size: 1.25rem;
+      font-style:  normal;
+      color: black;
+      background-color: #c1f0f4;
+      border-color: #c1f0f4;
+      cursor: pointer;
+
+      & img{
+        width: 24px;
+        margin: 0;
+      }
+
+      &:hover{
+        background-color: #ffffff;
         box-shadow: 0 0 16px var(--main-blue);
       }
     }
@@ -267,6 +298,7 @@ progress{
     display: flex;
     justify-content: space-around;
     width: 70%;
+    margin-top: 1rem;
 
     div{
       display: flex;
@@ -286,7 +318,7 @@ progress{
   
   #displayWrapper{
     border-radius: 12px;
-    margin: 5rem 0 4rem;
+    margin: 3rem 0 3rem;
     padding: 4px;
     border: var(--main-blue) 2px solid;
     box-shadow: 0 0 16px var(--main-blue);
@@ -332,7 +364,7 @@ progress{
     box-shadow: 0 0 12px white;
 
     .keycap{
-      width: 4.5rem; height: 3.5rem;
+      width: 4.2rem; height: 3.5rem;
       
       border: none;
       background-position: center;
@@ -364,6 +396,40 @@ progress{
         &#key6{ background-image: url(./imgs/keyCapPressed6.webp); }
         &#key7{ background-image: url(./imgs/keyCapPressed7.webp); }
       }
+    }
+  }
+}
+
+/* Meta buttons: ================================================= */
+.metaButton{
+  margin: 1rem 2rem 0;
+  padding: 0.5rem 1.5rem;
+  border: transparent 1px solid;
+  border-radius: 2px;
+}
+#buttonPause{
+  background-color: #f33f2f60;
+  border-color: var(--color-incorrect);
+  color: white;
+  cursor: pointer;
+
+  &:hover{
+    background-color: var(--color-incorrect);
+  }
+}
+#buttonLevelUp{
+  background-color: #90b0b360;
+  border-color: #90b0b3;
+  cursor: not-allowed;
+  
+  &.enabled{
+    background-color: #eecb2c60;
+    border-color: var(--color-golden);
+    color: white;
+    cursor: pointer;
+    
+    &:hover{
+      background-color: var(--color-golden);
     }
   }
 }

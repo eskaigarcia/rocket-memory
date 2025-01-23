@@ -1,9 +1,14 @@
 // Information on a player's game save
 const
 player = {
+    sound: true,
     unlocks: 0,
     highScore: 0,
-    sound: true,
+    gamesStarted: 0,
+    roundsPlayed: 0,
+    corrects: 0,
+    incorrects: 0,
+    timeouts: 0,
 }
 
 // Information on all level configurations
@@ -82,7 +87,7 @@ levelInformation = [
         time: 10000,
     },
     {
-        id: 8,
+        id: 9,
         base: 8,
         exp: 7,
         reward: 5225,

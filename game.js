@@ -19,6 +19,7 @@ level = {
         level.baseSpeed = levelInformation[which].baseSpeed
         level.time = levelInformation[which].time
         document.getElementById('level').textContent = level.id + 1;
+        timer.rampSpeed();
         timer.reset();
     },
 
@@ -39,7 +40,10 @@ timer = {
         if (!this.paused) { this.timer -= delta; }
         this.updateTimeBar();
         requestAnimationFrame(this.tick.bind(this));
-        if(timer.timer <= 0) round.end('lost');
+        if(timer.timer <= 0) {
+            player.timeouts++;
+            round.end('lost');
+        };
     },
 
     updateTimeBar() {
@@ -94,6 +98,8 @@ round = {
         round.selection = [];
         round.input = [];
         round.displayCount = 0;
+        timer.rampSpeed();
+        player.roundsPlayed++;
         
         for (let i=0; i<level.base; i++) {
             round.selection.push(Math.floor(Math.random() * level.exp));
@@ -105,13 +111,14 @@ round = {
     cleanStart() {
         // Restores the round object to defaults for a new game run 
         this.points = 0;
+        this.streak = 0;
         this.innerStreak = 0;
         this.lives = 3;
         this.start();
-        this.updateLives();
-        this.updatePoints();
+        this.updateStats();
         timer.reset();
         timer.enableTicking();
+        player.gamesStarted++;
     },
 
     selectionDisplayNext() {
@@ -124,7 +131,7 @@ round = {
 
         let i = this.displayCount;
         document.querySelector(`#display #light${i}`).classList.add(`color${this.selection[i]}`)
-        playSound('note', this.selection[i]);
+        if(level.speed > 60) playSound('note', this.selection[i]);
         this.displayCount++;
     },
 
@@ -171,8 +178,9 @@ round = {
         timer.pause();
         switch (veredict) {
             case 'win':
-                this.streak++
-                this.innerStreak++
+                this.streak++;
+                this.innerStreak++;
+                player.corrects++;
                 pointConsole.give();
                 if (this.innerStreak >= 10 && level.id < 12) { 
                     colorFlash('golden')
@@ -187,6 +195,7 @@ round = {
                 colorFlash('incorrect');
                 this.streak = 0;
                 this.lives--;
+                player.incorrects;
                 break;
         }
 
@@ -194,6 +203,7 @@ round = {
         timer.reset();
         timer.rampSpeed();
         this.updateStats();
+        this.handleLevelUpButton();
         
         // Start next round if enough lives available
         this.lives > 0 ? setTimeout(round.start, level.speed * 2) : UIConsole.displayDefeat();
@@ -209,8 +219,8 @@ round = {
 
     levelUp() {
         // Load next level and start a round in it
-        if(round.innerStreak < 5) return;                   // Only allow level up if 5 correct answers in the level
-        if(player.unlocks == level.id) player.unlocks++     // Unlock the level in player's save in first access
+        if(round.innerStreak < 5) return;                                   // Only allow level up if 5 correct answers in the level
+        if(player.unlocks == level.id && level.id < 11) player.unlocks++    // Unlock the level in player's save in first access
         level.load(level.id + 1);
         round.innerStreak = 0;
         colorFlash('golden');
@@ -218,7 +228,17 @@ round = {
         clearInterval(round.displayTimer);
         setTimeout(round.start, level.speed * 1.5);
         timer.reset();
+        round.handleLevelUpButton();
+        playSound('up', level.id);
     },
+
+    handleLevelUpButton() {
+        if(round.innerStreak < 5) {
+            document.getElementById('buttonLevelUp').classList.remove('enabled');
+        } else {
+            document.getElementById('buttonLevelUp').classList.add('enabled');
+        }
+    }
 
 },
 

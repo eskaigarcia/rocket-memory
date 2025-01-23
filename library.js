@@ -2,7 +2,7 @@
 // Types are: in, out, up, note
 function playSound(type, pitch) {
     if(!player.sound) return;
-    const sound = document.getElementById(`sfx_${type}${pitch+level.pitchShift}`);
+    const sound = document.getElementById(`sfx_${type}${pitch}`);
     sound.currentTime = 0;
     sound.play();
 }

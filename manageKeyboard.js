@@ -1,4 +1,5 @@
 document.addEventListener('keydown', function(event) {
+    cheats.receiver(event);
     pressKey(event.code);
 });
 

@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="game.css">
 </head>
-<body onload="level.updateUnlocks()">
+<body>
 
     <!-- Initial popup to gather user interaction and enable sound (if desired) -->
     <div id="enableSound">
@@ -58,7 +58,7 @@
                     <button id="buttonLevel9" onclick="UIConsole.loadLevel(9)">10</button>
                     <button id="buttonLevel10" onclick="UIConsole.loadLevel(10)">11</button>
                     <button id="buttonLevel11" onclick="UIConsole.loadLevel(11)">12</button>
-                    <button id="settings">Settings</button>
+                    <button id="settings" class="double"><img src="imgs/settings.png">Ajustes</button>
                 </div>
             </div>
         </div>
@@ -95,8 +95,8 @@
                     <button class="keycap" id="key7" onclick="round.makeInput(7)"></button>
                 </div>
                 <div>
-                    <button onclick="UIConsole.pause()">[ESC] Pause</button>
-                    <button onclick="round.levelUp()">Level up [ENTER]</button>
+                    <button class="metaButton" id="buttonPause" onclick="UIConsole.pause()">[ESC] Pause</button>
+                    <button class="metaButton" id="buttonLevelUp" onclick="round.levelUp()">Level up [ENTER]</button>
                 </div> 
             </div>
             <div id="streakPanel">
@@ -108,6 +108,14 @@
     <div id="bottomFov"></div>
 
     <!-- TODO: Settinigs page -->
+    <div id="settingsView">
+
+    </div>
+    
+    <!-- TODO: Pause screen -->
+    <div id="pausedView">
+
+    </div>
 
     <!-- Sound engine -->
     <div id="sfx" style="display: none;">
@@ -176,5 +184,6 @@
     <script src="storage.js"></script>
     <script src="manageKeyboard.js"></script>
     <script src="interface.js"></script>
+    <script src="cheats.js"></script>
 </body>
 </html>
